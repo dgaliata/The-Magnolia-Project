@@ -1,5 +1,5 @@
 # The-Magnolia-Project
- 
+Please see [this link](https://magnolia-project.hashnode.space/project-docs/project-overview) for more information.
 # Overview
 
 The Magnolia Project is a fictitious biomedical company. As a DevOps engineer 
