@@ -27,3 +27,9 @@ variable "availability_zone" {
   description = "AWS Availability Zone for the subnets"
   type        = string
 }
+
+variable "enable_nat_gateway" {
+  type        = bool
+  description = "Whether to create a NAT Gateway"
+  default     = true
+}

@@ -10,4 +10,5 @@ module "vpc" {
   public_subnet_cidr  = "10.1.1.0/24"
   private_subnet_cidr = "10.1.2.0/24"
   availability_zone   = "us-east-1a"
+  enable_nat_gateway = false
 }
