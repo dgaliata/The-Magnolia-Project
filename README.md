@@ -7,7 +7,7 @@ and security practitioner, you will build a secure, cloud-based infrastructure o
 
 # Project Components
 
-## Infrastructure as Code (IaC) with Terraform
+## Infrastructure as Code (IaC) with Terraform ![terraform](https://img.icons8.com/?size=50&id=kEkT1u7zTDk5&format=png&color=000000)
 
 ### AWS Resources 
 Use Terraform to provision core AWS components such as EC2 instances, S3 buckets, VPCs, security groups, IAM roles, and more.
