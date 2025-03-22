@@ -7,7 +7,7 @@ and security practitioner, you will build a secure, cloud-based infrastructure o
 
 # Project Components
 
-## Infrastructure as Code (IaC) with Terraform ![terraform](https://img.icons8.com/?size=50&id=kEkT1u7zTDk5&format=png&color=000000)
+## Infrastructure as Code (IaC) with Terraform ![terraform](https://img.icons8.com/?size=40&id=kEkT1u7zTDk5&format=png&color=000000)
 
 ### AWS Resources 
 Use Terraform to provision core AWS components such as EC2 instances, S3 buckets, VPCs, security groups, IAM roles, and more.
@@ -15,7 +15,7 @@ Use Terraform to provision core AWS components such as EC2 instances, S3 buckets
 ### Automation
 Automate the setup and configuration of cloud infrastructure to streamline deployments and enforce consistency.
 
-## FastAPI Applications
+## FastAPI Applications ![api](https://img.icons8.com/?size=40&id=21896&format=png&color=000000)
 
 ### Employee Directory App
 
@@ -35,7 +35,7 @@ Integrates with an identity provider to manage user authentication and access co
 
 Built using FastAPI to unify the API layer and any dynamic web content.
 
-## Database
+## Database ![db](https://img.icons8.com/?size=40&id=NFQusZJ4neki&format=png&color=000000)
 
 ### DynamoDB
 
@@ -43,7 +43,7 @@ Use DynamoDB for storing all application data (both structured employee informat
 
 Benefits include scalability, high performance, built-in encryption at rest, and a flexible schema design that suits varying data types.
 
-## CI/CD Pipelines
+## CI/CD Pipelines ![ci](https://img.icons8.com/?size=40&id=4UYHY7QgwtFu&format=png&color=000000) 
 
 ### GitHub Actions
 
@@ -51,7 +51,7 @@ Implement a CI/CD pipeline to automate testing, integration, and deployment of F
 
 Include automated security checks and code quality assessments in the workflow.
 
-## Security Integration
+## Security Integration ![sec](https://img.icons8.com/?size=40&id=0tpqgxISselU&format=png&color=000000)
 
 ### IAM Policies
 
@@ -69,7 +69,7 @@ Enable encryption for data at rest (DynamoDB and S3) using AWS KMS.
 
 Integrate security scans and best practices checks within the CI/CD pipelines.
 
-## Employee Directory
+## Employee Directory ![employee](https://img.icons8.com/?size=40&id=108347&format=png&color=000000)
 
 ### Development
 
@@ -81,7 +81,7 @@ Render web pages using FastAPI’s Jinja2 templates and serve static assets (CSS
 
 Store employee data in DynamoDB with encryption enabled, ensuring scalability and security.
 
-## Networking & Storage
+## Networking & Storage ![network](https://img.icons8.com/?size=40&id=13569&format=png&color=000000)
 
 ### VPC Configuration
 
@@ -107,7 +107,7 @@ Build an interface with FastAPI for scientists to securely upload and manage exp
 
 Store experimental data in S3, with metadata management and lifecycle policies in place.
 
-## Monitoring & Dashboards (Prometheus & Grafana)
+## Monitoring & Dashboards (Prometheus & Grafana) ![metrics](https://img.icons8.com/?size=40&id=12308&format=png&color=000000)
 
 ### Metrics Collection
 
@@ -121,7 +121,7 @@ Use Grafana (or Grafana Cloud on an EC2 instance) for visualizing metrics and cr
 
 Set up alerts for system health, performance issues, and potential security incidents.
 
-## Documentation
+## Documentation ![documenta](https://img.icons8.com/?size=40&id=QanbId3SGVR7&format=png&color=000000)
 
 ### Project Documentation
 
@@ -131,7 +131,7 @@ Use Hashnode Docs to create comprehensive project documentation.
 
 Utilize Eraser io for creating network and architecture diagrams (https://www.eraser.io/).
 
-## Monitoring & Incident Response
+## Monitoring & Incident Response ![metrics](https://img.icons8.com/?size=40&id=14835&format=png&color=000000)
 
 ### Application Monitoring
 
