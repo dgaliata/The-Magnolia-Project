@@ -7,11 +7,8 @@ magnolia_infra/
 ├── environments/
 │   ├── dev/
 │   │   ├── main.tf
-│   │   └── terraform.tfvars
 │   ├── staging/
 │   │   ├── main.tf
-│   │   └── terraform.tfvars
 │   └── prod/
 │       ├── main.tf
-│       └── terraform.tfvars
 └── provider.tf
