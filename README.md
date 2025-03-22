@@ -1,4 +1,6 @@
 # The-Magnolia-Project
+<img src="https://res.cloudinary.com/dcu6gtw2y/image/upload/v1742615267/Magnolia_Project_logo_tbyrjc.png" alt="Magnolia Project logo" width="250">
+
 Please see [this link](https://magnolia-project.hashnode.space/project-docs/project-overview) for more information.
 # Overview
 
