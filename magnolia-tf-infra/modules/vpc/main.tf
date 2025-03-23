@@ -1,4 +1,4 @@
-resource "aws_vpc" "magnoila_vpc" {
+resource "aws_vpc" "magnolia_vpc" {
   cidr_block = var.cidr_block
   tags = {
     Name        = var.name
@@ -7,7 +7,7 @@ resource "aws_vpc" "magnoila_vpc" {
 }
 
 resource "aws_subnet" "public" {
-  vpc_id                  = aws_vpc.this.id
+  vpc_id                  = aws_vpc.magnolia_vpc.id
   cidr_block              = var.public_subnet_cidr
   availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
@@ -19,7 +19,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  vpc_id            = aws_vpc.this.id
+  vpc_id            = aws_vpc.magnolia_vpc.id
   cidr_block        = var.private_subnet_cidr
   availability_zone = var.availability_zone
 

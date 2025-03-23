@@ -1,6 +1,6 @@
 output "vpc_id" {
   description = "The ID of the VPC"
-  value       = aws_vpc.this.id
+  value       = aws_vpc.magnolia_vpc
 }
 
 output "public_subnet_id" {
