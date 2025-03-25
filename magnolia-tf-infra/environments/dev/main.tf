@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket       = "magnolia-tf-backend"
+    key          = "envs/dev/terraform.tfstate"
+    use_lockfile = true
+    region       = "us-east-1"
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
