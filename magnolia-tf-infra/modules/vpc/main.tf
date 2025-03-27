@@ -30,7 +30,7 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.magnolia_vpc.id
   tags = {
     Name        = "${var.name}-igw"
     Environment = var.environment
@@ -38,7 +38,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.magnolia_vpc.id
   tags = {
     Name        = "${var.name}-public-rt"
     Environment = var.environment
@@ -58,15 +58,15 @@ resource "aws_route_table_association" "public_subnet" {
 
 resource "aws_eip" "nat_eip" {
   depends_on = [aws_internet_gateway.igw]
-  count = var.enable_nat_gateway ? 1 : 0
+  count = var.enable_nat_gateway ? 1 : 1
   tags = {
     Name = "${var.name}-nat-eip"
   }
 }
 
 resource "aws_nat_gateway" "nat" {
-  count        = var.enable_nat_gateway ? 1 : 0
-  allocation_id = aws_eip.nat_eip.id
+  count         = var.enable_nat_gateway ? 1 : 0
+  allocation_id = aws_eip.nat_eip[count.index].id
   subnet_id     = aws_subnet.public.id
   depends_on    = [aws_internet_gateway.igw]
   tags = {
@@ -75,7 +75,7 @@ resource "aws_nat_gateway" "nat" {
 }
 
 resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.magnolia_vpc.id
   tags = {
     Name        = "${var.name}-private-rt"
     Environment = var.environment
@@ -83,9 +83,10 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private_internet_route" {
+  count                  = var.enable_nat_gateway ? 1 : 0
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat.id
+  nat_gateway_id         = aws_nat_gateway.nat[0].id
 }
 
 resource "aws_route_table_association" "private_subnet" {
