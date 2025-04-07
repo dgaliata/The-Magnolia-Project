@@ -5,7 +5,7 @@ Please see [this link](https://magnolia-project.hashnode.space/project-docs/proj
 # Overview
 
 The Magnolia Project is a fictitious biomedical company. As a DevOps engineer 
-and security practitioner, you will build a secure, cloud-based infrastructure on AWS using Terraform for automation, FastAPI for both web applications and APIs, and monitoring tools like Prometheus and Grafana. The focus is on infrastructure automation, CI/CD integration, security best practices, and performance monitoring.
+and security practitioner, I will build a secure, cloud-based infrastructure on AWS using Terraform for automation, FastAPI for both web applications and APIs, and monitoring tools like Prometheus and Grafana. The focus is on infrastructure automation, CI/CD integration, security best practices, and performance monitoring.
 
 # Project Components
 
