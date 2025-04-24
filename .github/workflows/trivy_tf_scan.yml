@@ -4,6 +4,8 @@ on: [push, pull_request]
 permissions:
   contents: read
   security-events: write
+  actions: read
+  id-token: write
  
 jobs:
   terraform_security_scan:
@@ -16,7 +18,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.30.0
         with: 
           scan-type: 'fs' 
-          scan-ref: '.'
+          scan-ref: '.'  # Scan the entire repository
           format: 'sarif'
           scanners: 'vuln,secret,misconfig'
           severity: 'CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN' 
