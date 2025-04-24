@@ -17,7 +17,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.30.0
         with: 
           scan-type: 'fs' 
-          scan-ref: 'terraform/'
+          scan-ref: '.'
           format: 'sarif'
           scanners: 'vuln,secret,misconfig'
           severity: 'CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN' 
