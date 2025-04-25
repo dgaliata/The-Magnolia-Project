@@ -149,6 +149,6 @@ Develop and test incident response playbooks to ensure readiness.
 
 ### Notifications
 
-Utilize AWS SNS for alerting and notifications when monitoring thresholds are breached.
+Utilize AWS SNS and other tools for alerting and notifications when monitoring thresholds are breached.
 
 The Magnolia Project is designed to showcase my skills in deploying a secure, automated cloud infrastructure using modern DevOps practices. I created this project to get more hands-on experience with both infrastructure management and application development while emphasizing security and scalability.
