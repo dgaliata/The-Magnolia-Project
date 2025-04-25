@@ -1,4 +1,4 @@
-magnolia_infra/
+terraform/
 ├── modules/
 │   └── vpc/
 │       ├── main.tf
