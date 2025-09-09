@@ -33,3 +33,9 @@ variable "enable_nat_gateway" {
   description = "Whether to create a NAT Gateway"
   default     = true
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key for EC2 access"
+  type        = string
+}
+

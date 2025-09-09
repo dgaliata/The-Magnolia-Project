@@ -93,3 +93,80 @@ resource "aws_route_table_association" "private_subnet" {
   subnet_id      = aws_subnet.private.id
   route_table_id = aws_route_table.private.id
 }
+
+# EC2 Instance for FastAPI Apps
+resource "aws_instance" "app_server" {
+  ami           = "ami-0c02fb55956c7d316" 
+  instance_type = "t2.micro"              
+  
+  subnet_id                   = aws_subnet.public.id
+  vpc_security_group_ids      = [aws_security_group.app_server.id]
+  associate_public_ip_address = true
+  
+  key_name = aws_key_pair.app_server.key_name
+  
+  user_data = <<-EOF
+    #!/bin/bash
+    yum update -y
+    yum install -y python3 python3-pip git
+    
+    # Install FastAPI dependencies
+    pip3 install fastapi uvicorn boto3
+    
+    # Create app directory
+    mkdir -p /home/ec2-user/apps
+    chown ec2-user:ec2-user /home/ec2-user/apps
+  EOF
+  
+  tags = {
+    Name        = "${var.name}-app-server"
+    Environment = var.environment
+  }
+}
+
+# Security Group for EC2
+resource "aws_security_group" "app_server" {
+  name        = "${var.name}-app-server-sg"
+  description = "Security group for FastAPI app server"
+  vpc_id      = aws_vpc.magnolia_vpc.id
+  
+  # SSH access
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["67.180.76.44/32"] 
+  }
+  
+  # FastAPI apps
+  ingress {
+    from_port   = 8000
+    to_port     = 8002
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  # All outbound traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  tags = {
+    Name        = "${var.name}-app-server-sg"
+    Environment = var.environment
+  }
+}
+
+# Key Pair for SSH access
+resource "aws_key_pair" "app_server" {
+  key_name   = "${var.name}-app-server-key"
+  public_key = var.ssh_public_key
+  
+  tags = {
+    Name        = "${var.name}-app-server-key"
+    Environment = var.environment
+  }
+}
