@@ -58,7 +58,7 @@ resource "aws_route_table_association" "public_subnet" {
 
 resource "aws_eip" "nat_eip" {
   depends_on = [aws_internet_gateway.igw]
-  count = var.enable_nat_gateway ? 1 : 1
+  count = var.enable_nat_gateway ? 1 : 0
   tags = {
     Name = "${var.name}-nat-eip"
   }
@@ -130,14 +130,6 @@ resource "aws_security_group" "app_server" {
   description = "Security group for FastAPI app server"
   vpc_id      = aws_vpc.magnolia_vpc.id
   
-  # SSH access
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["67.180.76.44/32"] 
-  }
-  
   # FastAPI apps
   ingress {
     from_port   = 8000
@@ -160,13 +152,4 @@ resource "aws_security_group" "app_server" {
   }
 }
 
-# Key Pair for SSH access
-resource "aws_key_pair" "app_server" {
-  key_name   = "${var.name}-app-server-key"
-  public_key = var.ssh_public_key
-  
-  tags = {
-    Name        = "${var.name}-app-server-key"
-    Environment = var.environment
-  }
-}
+
