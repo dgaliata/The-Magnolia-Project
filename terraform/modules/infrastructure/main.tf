@@ -150,4 +150,13 @@ resource "aws_security_group" "app_server" {
   }
 }
 
+# Security group for RDS access
+resource "aws_security_group" "database_access" {
+  name_prefix = "${var.name}-db-access"
+  vpc_id      = aws_vpc.magnolia_vpc.id
+  
+  tags = {
+    Name = "${var.name}-db-access-sg"
+  }
+}
 
