@@ -20,13 +20,6 @@ resource "aws_iam_role" "ec2_app_role" {
     Environment = var.environment
   }
 }
-
-# SSM Managed Instance Policy (for Session Manager)
-resource "aws_iam_role_policy_attachment" "ssm_managed_instance" {
-  role       = aws_iam_role.ec2_app_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
 # Instance Profile
 resource "aws_iam_instance_profile" "ec2_app_profile" {
   name = "${var.name}-ec2-app-profile"

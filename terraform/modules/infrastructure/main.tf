@@ -149,5 +149,3 @@ resource "aws_security_group" "app_server" {
     Environment = var.environment
   }
 }
-
-
