@@ -32,3 +32,4 @@ variable "enable_nat_gateway" {
   description = "Enable NAT Gateway"
   type        = bool
 }
+
