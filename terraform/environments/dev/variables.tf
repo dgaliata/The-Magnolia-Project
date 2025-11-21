@@ -1,35 +1,19 @@
-variable "name" {
-  description = "Name of the infrastructure"
-  type        = string
+variable "name"                 { type = string }
+variable "environment"          { type = string }
+variable "region"               { type = string }
+variable "cidr_block"           { type = string }
+variable "public_subnet_cidr_a" { type = string }
+variable "public_subnet_cidr_b" { type = string }
+variable "private_subnet_cidr_a"{ type = string }
+variable "private_subnet_cidr_b"{ type = string }
+
+variable "pg_db_name"  { type = string }
+variable "pg_username" { type = string }
+
+variable "kc_admin_user" { type = string }
+variable "kc_admin_password" {
+  type      = string
+  sensitive = true
 }
 
-variable "environment" {
-  description = "Environment name"
-  type        = string
-}
-
-variable "cidr_block" {
-  description = "CIDR block for VPC"
-  type        = string
-}
-
-variable "public_subnet_cidr" {
-  description = "CIDR block for public subnet"
-  type        = string
-}
-
-variable "private_subnet_cidr" {
-  description = "CIDR block for private subnet"
-  type        = string
-}
-
-variable "availability_zone" {
-  description = "AWS Availability Zone"
-  type        = string
-}
-
-variable "enable_nat_gateway" {
-  description = "Enable NAT Gateway"
-  type        = bool
-}
-
+variable "bastion_allowed_cidr" { type = string }

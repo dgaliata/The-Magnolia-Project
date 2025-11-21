@@ -17,3 +17,7 @@
 .idea/workspace.xml
 .DS_Store
 .idea/misc.xml
+.idea*
+terraform/environments/.DS_Store
+terraform/modules/.DS_Store
+terraform/environments/dev/terraform.tfvars
