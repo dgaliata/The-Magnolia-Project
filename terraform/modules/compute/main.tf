@@ -102,6 +102,7 @@ resource "aws_iam_instance_profile" "bastion_profile" {
 
 resource "aws_security_group" "bastion" {
   vpc_id = var.vpc_id
+  description = "Jump box for testing"
 
   ingress {
     from_port   = 3389

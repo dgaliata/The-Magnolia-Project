@@ -21,3 +21,4 @@
 terraform/environments/.DS_Store
 terraform/modules/.DS_Store
 terraform/environments/dev/terraform.tfvars
+*.tfvars

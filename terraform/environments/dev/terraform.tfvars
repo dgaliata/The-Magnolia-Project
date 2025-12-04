@@ -13,6 +13,6 @@ pg_db_name  = "magnolia"
 pg_username = "appadmin"
 
 kc_admin_user     = "admin"
-kc_admin_password = "ChangeMeNow!"
+kc_admin_password = ""
 
 bastion_allowed_cidr = "67.180.76.44/32"
