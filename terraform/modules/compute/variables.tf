@@ -15,9 +15,6 @@ variable "db_password" {
 }
 
 variable "kc_admin_user" { type = string }
-variable "kc_admin_password" {
-  type      = string
-  sensitive = true
-}
 
 variable "bastion_allowed_cidr" { type = string }
+variable "bastion_key_name" { type = string }

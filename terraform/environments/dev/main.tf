@@ -2,8 +2,8 @@ terraform {
   required_version = ">= 1.6.0"
 
   required_providers {
-    aws    = { source = "hashicorp/aws",    version = "~> 5.55" }
-    random = { source = "hashicorp/random", version = "~> 3.6"  }
+    aws    = { source = "hashicorp/aws", version = "~> 5.55" }
+    random = { source = "hashicorp/random", version = "~> 3.6" }
   }
 
   backend "s3" {
@@ -54,8 +54,8 @@ module "compute" {
   db_user              = var.pg_username
   db_password          = module.database.db_admin_password
   kc_admin_user        = var.kc_admin_user
-  kc_admin_password    = var.kc_admin_password
   bastion_allowed_cidr = var.bastion_allowed_cidr
+  bastion_key_name     = var.bastion_key_name
 }
 
 module "security" {
@@ -79,6 +79,16 @@ output "rds_endpoint" {
 
 output "keycloak_service_name" {
   value = module.compute.keycloak_service_name
+}
+
+output "keycloak_admin_user" {
+  value     = module.compute.keycloak_admin_user
+  sensitive = true
+}
+
+output "keycloak_admin_password" {
+  value     = module.compute.keycloak_admin_password
+  sensitive = true
 }
 
 output "wazuh_internal_dns" {

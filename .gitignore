@@ -1,24 +1,16 @@
 # Terraform
 .terraform/
 **/.terraform/
-.terraform/
-.terraform/
-.terraform/
-.terraform/
-.terraform/
-.terraform/
-.terraform/
-.terraform/
-.terraform/
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/modules.xml
-.idea/The-Magnolia-Project.iml
-.idea/vcs.xml
-.idea/workspace.xml
+*.tfstate
+*.tfstate.*
+
+# IDE
+.idea/
 .DS_Store
-.idea/misc.xml
-.idea*
-terraform/environments/.DS_Store
-terraform/modules/.DS_Store
+*.iml
+
+# Environment files (contain secrets)
 terraform/environments/dev/terraform.tfvars
+terraform/environments/production/terraform.tfvars
 *.tfvars
+*.auto.tfvars

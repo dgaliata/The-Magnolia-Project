@@ -2,14 +2,19 @@ resource "aws_ecs_cluster" "main" {
   name = "${var.name}-ecs"
 }
 
+resource "random_password" "kc_admin_password" {
+  length  = 24
+  special = true
+}
+
 resource "aws_iam_role" "ecs_task_exec" {
   name = "${var.name}-ecs-task-exec"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow",
+      Effect    = "Allow",
       Principal = { Service = "ecs-tasks.amazonaws.com" },
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -39,8 +44,8 @@ resource "aws_ecs_task_definition" "keycloak" {
   execution_role_arn       = aws_iam_role.ecs_task_exec.arn
 
   container_definitions = jsonencode([{
-    name  = "keycloak",
-    image = "quay.io/keycloak/keycloak:25.0.2",
+    name         = "keycloak",
+    image        = "quay.io/keycloak/keycloak:25.0.2",
     portMappings = [{ containerPort = 8080 }],
     environment = [
       { name = "KC_DB", value = "postgres" },
@@ -48,7 +53,7 @@ resource "aws_ecs_task_definition" "keycloak" {
       { name = "KC_DB_USERNAME", value = var.db_user },
       { name = "KC_DB_PASSWORD", value = var.db_password },
       { name = "KEYCLOAK_ADMIN", value = var.kc_admin_user },
-      { name = "KEYCLOAK_ADMIN_PASSWORD", value = var.kc_admin_password }
+      { name = "KEYCLOAK_ADMIN_PASSWORD", value = random_password.kc_admin_password.result }
     ],
     command = ["start", "--http-port=8080"]
   }])
@@ -59,7 +64,7 @@ resource "aws_ecs_service" "keycloak" {
   desired_count   = 1
   launch_type     = "FARGATE"
   task_definition = aws_ecs_task_definition.keycloak.arn
-  name = "${var.name}-keycloak-service"
+  name            = "${var.name}-keycloak-service"
 
   network_configuration {
     subnets          = var.private_subnets
@@ -83,9 +88,9 @@ resource "aws_iam_role" "bastion_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow",
+      Effect    = "Allow",
       Principal = { Service = "ec2.amazonaws.com" },
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -101,7 +106,7 @@ resource "aws_iam_instance_profile" "bastion_profile" {
 }
 
 resource "aws_security_group" "bastion" {
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
   description = "Jump box for testing"
 
   ingress {
@@ -126,7 +131,7 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.bastion.id]
   iam_instance_profile        = aws_iam_instance_profile.bastion_profile.name
-  key_name                    = "your-keypair"
+  key_name                    = var.bastion_key_name
 }
 
 output "bastion_public_ip" {
@@ -135,4 +140,13 @@ output "bastion_public_ip" {
 
 output "keycloak_service_name" {
   value = aws_ecs_service.keycloak.name
+}
+
+output "keycloak_admin_password" {
+  value     = random_password.kc_admin_password.result
+  sensitive = true
+}
+
+output "keycloak_admin_user" {
+  value = var.kc_admin_user
 }
