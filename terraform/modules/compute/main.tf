@@ -125,13 +125,21 @@ resource "aws_security_group" "bastion" {
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = data.aws_ami.windows.id
-  instance_type               = "t3.micro"
-  subnet_id                   = var.public_subnets[0]
+  ami           = data.aws_ami.windows.id
+  instance_type = "t3.micro"
+  subnet_id     = var.public_subnets[0]
+  # nosemgrep: terraform.aws.security.aws-ec2-has-public-ip.aws-ec2-has-public-ip
+  # Bastion requires public IP for RDP access; access is restricted via security group to allowed CIDR
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.bastion.id]
   iam_instance_profile        = aws_iam_instance_profile.bastion_profile.name
   key_name                    = var.bastion_key_name
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
 }
 
 output "bastion_public_ip" {

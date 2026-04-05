@@ -33,6 +33,10 @@ resource "aws_db_instance" "pg" {
   storage_encrypted      = true
   multi_az               = false
   publicly_accessible    = false
+
+  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
+  backup_retention_period         = 7
+  backup_window                   = "03:00-04:00"
 }
 
 output "db_endpoint" {

@@ -52,10 +52,9 @@ jobs:
           config: >
             p/terraform
             p/secrets
-          upload: 'on'
-          output: 'semgrep-results.sarif'
 
       - name: Upload Semgrep results to GitHub Security tab
+        if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'semgrep-results.sarif'
+          sarif_file: 'semgrep.sarif'

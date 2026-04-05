@@ -11,16 +11,20 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_subnet" "public_a" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_cidr_a
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.public_subnet_cidr_a
+  availability_zone = data.aws_availability_zones.available.names[0]
+  # nosemgrep: terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address
+  # Public subnets intentionally allow public IPs for bastion/NAT gateway access
   map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "public_b" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_cidr_b
-  availability_zone       = data.aws_availability_zones.available.names[1]
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.public_subnet_cidr_b
+  availability_zone = data.aws_availability_zones.available.names[1]
+  # nosemgrep: terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address
+  # Public subnets intentionally allow public IPs for bastion/NAT gateway access
   map_public_ip_on_launch = true
 }
 
