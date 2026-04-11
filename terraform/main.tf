@@ -60,7 +60,7 @@ locals {
 }
 
 # ============================================
-# VPC & Networking
+# VPC & Networking (Single AZ for cost savings)
 # ============================================
 
 resource "aws_vpc" "main" {
@@ -77,62 +77,33 @@ resource "aws_internet_gateway" "main" {
   tags = { Name = "${local.name_prefix}-igw" }
 }
 
-resource "aws_subnet" "public_1" {
+resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
 
-  tags = { Name = "${local.name_prefix}-public-subnet-1" }
+  tags = { Name = "${local.name_prefix}-public-subnet" }
 }
 
-resource "aws_subnet" "public_2" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.2.0/24"
-  availability_zone       = "us-east-1b"
-  map_public_ip_on_launch = true
-
-  tags = { Name = "${local.name_prefix}-public-subnet-2" }
-}
-
-resource "aws_subnet" "private_1" {
+resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.11.0/24"
   availability_zone = "us-east-1a"
 
-  tags = { Name = "${local.name_prefix}-private-subnet-1" }
+  tags = { Name = "${local.name_prefix}-private-subnet" }
 }
 
-resource "aws_subnet" "private_2" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.0.12.0/24"
-  availability_zone = "us-east-1b"
-
-  tags = { Name = "${local.name_prefix}-private-subnet-2" }
-}
-
-resource "aws_eip" "nat_1" {
+resource "aws_eip" "nat" {
   domain = "vpc"
-  tags   = { Name = "${local.name_prefix}-nat-eip-1" }
+  tags   = { Name = "${local.name_prefix}-nat-eip" }
 }
 
-resource "aws_eip" "nat_2" {
-  domain = "vpc"
-  tags   = { Name = "${local.name_prefix}-nat-eip-2" }
-}
+resource "aws_nat_gateway" "main" {
+  subnet_id     = aws_subnet.public.id
+  allocation_id = aws_eip.nat.id
 
-resource "aws_nat_gateway" "nat_1" {
-  subnet_id     = aws_subnet.public_1.id
-  allocation_id = aws_eip.nat_1.id
-
-  tags = { Name = "${local.name_prefix}-nat-1" }
-}
-
-resource "aws_nat_gateway" "nat_2" {
-  subnet_id     = aws_subnet.public_2.id
-  allocation_id = aws_eip.nat_2.id
-
-  tags = { Name = "${local.name_prefix}-nat-2" }
+  tags = { Name = "${local.name_prefix}-nat" }
 }
 
 resource "aws_route_table" "public" {
@@ -146,46 +117,25 @@ resource "aws_route_table" "public" {
   tags = { Name = "${local.name_prefix}-public-rt" }
 }
 
-resource "aws_route_table" "private_1" {
+resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_1.id
+    nat_gateway_id = aws_nat_gateway.main.id
   }
 
-  tags = { Name = "${local.name_prefix}-private-rt-1" }
+  tags = { Name = "${local.name_prefix}-private-rt" }
 }
 
-resource "aws_route_table" "private_2" {
-  vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_2.id
-  }
-
-  tags = { Name = "${local.name_prefix}-private-rt-2" }
-}
-
-resource "aws_route_table_association" "public_1" {
-  subnet_id      = aws_subnet.public_1.id
+resource "aws_route_table_association" "public" {
+  subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.public.id
 }
 
-resource "aws_route_table_association" "public_2" {
-  subnet_id      = aws_subnet.public_2.id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_route_table_association" "private_1" {
-  subnet_id      = aws_subnet.private_1.id
-  route_table_id = aws_route_table.private_1.id
-}
-
-resource "aws_route_table_association" "private_2" {
-  subnet_id      = aws_subnet.private_2.id
-  route_table_id = aws_route_table.private_2.id
+resource "aws_route_table_association" "private" {
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
 }
 
 # ============================================
@@ -359,7 +309,7 @@ resource "aws_lb" "main" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
-  subnets            = [aws_subnet.public_1.id, aws_subnet.public_2.id]
+  subnets            = [aws_subnet.public.id]
 
   enable_deletion_protection = false
 
@@ -474,12 +424,12 @@ resource "aws_ecr_repository" "scientific_data_backend" {
 }
 
 # ============================================
-# Database (RDS)
+# Database (RDS) - Single AZ for cost savings
 # ============================================
 
 resource "aws_db_subnet_group" "main" {
   name       = "${local.name_prefix}-db-subnet-group"
-  subnet_ids = [aws_subnet.private_1.id, aws_subnet.private_2.id]
+  subnet_ids = [aws_subnet.private.id]
 
   tags = { Name = "${local.name_prefix}-db-subnet-group" }
 }
@@ -531,10 +481,11 @@ resource "aws_db_instance" "main" {
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.rds.id]
 
-  backup_retention_period = 7
+  backup_retention_period = 1
   backup_window           = "03:00-04:00"
   maintenance_window      = "mon:04:00-mon:05:00"
 
+  multi_az                   = false
   skip_final_snapshot        = true
   deletion_protection        = false
   publicly_accessible        = false
