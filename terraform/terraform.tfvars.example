@@ -1,0 +1,5 @@
+aws_region  = "us-east-1"
+project_name = "magnolia"
+environment  = "dev"
+
+db_username = "magnolia_admin"
