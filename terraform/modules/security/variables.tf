@@ -1,8 +1,0 @@
-variable "name" { type = string }
-variable "environment" { type = string }
-variable "region" { type = string }
-
-variable "vpc_id" { type = string }
-variable "vpc_cidr" { type = string }
-variable "private_subnets" { type = list(string) }
-variable "public_route_table_id" { type = string }
