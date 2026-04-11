@@ -1,139 +1,205 @@
 # The-Magnolia-Project
 <img src="https://res.cloudinary.com/dcu6gtw2y/image/upload/v1742615267/Magnolia_Project_logo_tbyrjc.png" alt="Magnolia Project logo" width="250">
 
-Please see [this link](https://magnolia-project.hashnode.space/project-docs/project-overview) for more information.
-# Overview
+# 🌿 The Magnolia Project
 
-The Magnolia Project is a fictitious biomedical company. As a DevOps engineer 
-and security practitioner, I will build a secure, cloud-based infrastructure on AWS using Terraform for automation, FastAPI for both web applications and APIs, and monitoring tools like Prometheus and Grafana. The focus is on infrastructure automation, CI/CD integration, security best practices, and performance monitoring.
+> A fictitious biomedical company used as a hands-on DevOps and cloud security portfolio project.
 
-# Project Components
+---
 
-## Infrastructure as Code (IaC) with Terraform ![terraform](https://img.icons8.com/?size=40&id=kEkT1u7zTDk5&format=png&color=000000)
+## Overview
 
-### AWS Resources 
-Use Terraform to provision core AWS components such as EC2 instances, S3 buckets, VPCs, security groups, IAM roles, and more.
+The Magnolia Project is a secure, cloud-based infrastructure built on AWS using Terraform for automation, FastAPI for backend APIs, React for the frontend, and monitoring tools like Prometheus and Grafana. The focus is on infrastructure automation, containerized application deployment, CI/CD integration, security best practices, and performance monitoring.
 
-### Automation
-Automate the setup and configuration of cloud infrastructure to streamline deployments and enforce consistency.
+> **Note:** This is a personal portfolio project. All components and configurations are subject to change.
 
-## FastAPI Applications ![api](https://img.icons8.com/?size=40&id=21896&format=png&color=000000)
+---
 
-### Employee Directory App
+## Applications
 
-A CRUD web application to manage employee data.
+### Scientific Data App
+A full-stack application for scientists to securely upload, manage, and track experimental data and projects.
 
-Leverages FastAPI’s templating capabilities (via Jinja2) for rendering HTML and serving CSS/JavaScript for a full-featured UI.
+- **Frontend:** React
+- **Backend:** FastAPI
+- **Database:** PostgreSQL (AWS RDS)
+- **File Storage:** S3
 
-### Scientific Data Management App
+### Auth Service
+Handles user authentication and issues JWTs consumed by the Scientific Data App.
 
-A FastAPI-based application for scientists to submit experimental data and track projects.
+- **Backend:** FastAPI
+- **Identity Provider:** AWS Cognito + Google OAuth ("Login with Google")
 
-Provides both a user-friendly web interface and robust API endpoints.
+---
 
-### Authentication Service
+## Project Phases
 
-Integrates with an identity provider to manage user authentication and access control.
+### Phase 1 — AWS Foundation (Terraform)
 
-Built using FastAPI to unify the API layer and any dynamic web content.
+All infrastructure is provisioned via Terraform before any application code is deployed.
 
-## Database ![db](https://img.icons8.com/?size=40&id=NFQusZJ4neki&format=png&color=000000)
+**Networking**
+- VPC with public and private subnets across multiple availability zones
+- Route tables, internet gateway, NAT gateway
+- Security groups (scoped per service — ALB, ECS, RDS)
+- NACLs for subnet-level traffic control
 
-### DynamoDB
+**Compute**
+- ECS cluster (Fargate — serverless containers, no EC2 management)
+- Application Load Balancer (ALB) with target groups and listeners
+- ECR repositories (one per app) for Docker image storage
 
-Use DynamoDB for storing all application data (both structured employee information and unstructured experimental metadata).
-
-Benefits include scalability, high performance, built-in encryption at rest, and a flexible schema design that suits varying data types.
-
-## CI/CD Pipelines ![ci](https://img.icons8.com/?size=40&id=4UYHY7QgwtFu&format=png&color=000000) 
-
-### GitHub Actions
-
-Implement a CI/CD pipeline to automate testing, integration, and deployment of FastAPI applications and Terraform configurations.
-
-Include automated security checks and code quality assessments in the workflow.
-
-## Security Integration ![sec](https://img.icons8.com/?size=40&id=0tpqgxISselU&format=png&color=000000)
-
-### IAM Policies
-
-Enforce the principle of least privilege across AWS resources.
-
-Audit and Monitoring:
-
-Utilize AWS CloudTrail for logging, CloudWatch for infrastructure monitoring, and AWS GuardDuty for threat detection.
-
-### Encryption
-
-Enable encryption for data at rest (DynamoDB and S3) using AWS KMS.
-
-### CI/CD Security
-
-Integrate security scans and best practices checks within the CI/CD pipelines.
-
-## Employee Directory ![employee](https://img.icons8.com/?size=40&id=108347&format=png&color=000000)
-
-### Development
-
-Build the employee directory as a FastAPI application that manages users, roles, and attributes.
-
-Render web pages using FastAPI’s Jinja2 templates and serve static assets (CSS, JavaScript) using Starlette’s StaticFiles.
-
-### Data Storage
-
-Store employee data in DynamoDB with encryption enabled, ensuring scalability and security.
-
-## Networking & Storage ![network](https://img.icons8.com/?size=40&id=13569&format=png&color=000000)
-
-### VPC Configuration
-
-Create a VPC with subnets and security groups tailored for different components.
-
-### S3 Storage
-
-Use S3 for storing experiment data and other assets.
-
-Implement lifecycle policies to manage storage costs and move data to Glacier for long-term retention.
-
-### Security Controls
-
-Configure security groups and NACLs to control inbound/outbound network access.
-
-## Scientific Experiment Data
-
-### Interface Development
-
-Build an interface with FastAPI for scientists to securely upload and manage experimental data.
-
-### Data Storage
-
-Store experimental data in S3, with metadata management and lifecycle policies in place.
-
-## Monitoring & Dashboards (Prometheus & Grafana) ![metrics](https://img.icons8.com/?size=40&id=12308&format=png&color=000000)
-
-### Metrics Collection
-
-Deploy Prometheus to gather performance metrics from your FastAPI applications and AWS infrastructure.
-
-### Visualization
-
-Use Grafana (or Grafana Cloud on an EC2 instance) for visualizing metrics and creating dashboards.
-
-### Alerting
-
-Set up alerts for system health, performance issues, and potential security incidents.
-
-## Documentation ![documenta](https://img.icons8.com/?size=40&id=QanbId3SGVR7&format=png&color=000000)
-
-### Project Documentation
-
-Use Hashnode Docs to create comprehensive project documentation.
-
-### Diagrams
-
-Utilize Eraser io for creating network and architecture diagrams (https://www.eraser.io/).
-
-## Monitoring & Incident Response ![metrics](https://img.icons8.com/?size=40&id=14835&format=png&color=000000)
+**Data**
+- RDS PostgreSQL on `db.t3.micro` (free tier), deployed in a private subnet
+- S3 buckets for experiment file uploads and static assets
+- AWS Secrets Manager for database credentials and OAuth keys
+
+**IAM**
+- ECS task execution role (shared across tasks)
+- Per-app ECS task roles with least-privilege policies
+- Cognito User Pool with Google as a federated identity provider
+
+---
+
+### Phase 2 — Application Code
+
+```
+apps/
+  scientific-data/
+    frontend/             # React
+    backend/              # FastAPI
+    Dockerfile.frontend
+    Dockerfile.backend
+  auth-service/
+    backend/              # FastAPI (handles Cognito/Google login flow)
+    Dockerfile.backend
+
+shared/
+  auth/                   # JWT validation middleware
+  db/                     # Database connection and base models
+  utils/                  # Shared utilities
+```
+
+A `docker-compose.yml` at the root runs the full stack locally — both apps and a local PostgreSQL instance.
+
+**Local dev vs. production auth:**
+
+| | Local | ECS / Production |
+|---|---|---|
+| App-to-AWS | IAM user / AWS CLI profile | IAM Task Role (automatic) |
+| User auth | Disabled / mock user | Cognito + Google OAuth |
+| Secrets | `.env` file (gitignored) | AWS Secrets Manager |
+
+---
+
+### Phase 3 — CI/CD (CircleCI + ArgoCD)
+
+**CircleCI** — build and test pipeline:
+- On pull request → lint, unit tests, security scans (`bandit` for Python, `checkov` for Terraform)
+- On merge to `main` → build Docker images, push to ECR, update deployment manifests with new image tags
+
+**ArgoCD** — GitOps deployment:
+- Watches the `deployments/` directory for manifest changes
+- Automatically syncs updated task definitions and service configs to ECS
+
+```
+deployments/
+  scientific-data/
+    task-definition.json
+    service.json
+  auth-service/
+    task-definition.json
+    service.json
+```
+
+---
+
+### Phase 4 — Monitoring & Observability
+
+| Tool | Role |
+|---|---|
+| Prometheus | Scrapes `/metrics` from FastAPI apps via `prometheus-fastapi-instrumentator` |
+| Grafana | Dashboards for request latency, error rates, and ECS task health |
+| AWS CloudWatch | ECS task logs via `awslogs` driver; infrastructure-level metrics |
+| AWS SNS | Alerts triggered by CloudWatch alarms (email / Slack) |
+| AWS GuardDuty | Continuous threat detection on the account |
+| AWS CloudTrail | Audit log of all AWS API activity |
+
+---
+
+## Repo Structure
+
+```
+magnolia-project/
+├── terraform/
+│   ├── networking/
+│   ├── compute/
+│   ├── database/
+│   ├── storage/
+│   ├── iam/
+│   └── cognito/
+├── apps/
+│   ├── scientific-data/
+│   │   ├── frontend/
+│   │   ├── backend/
+│   │   ├── Dockerfile.frontend
+│   │   └── Dockerfile.backend
+│   └── auth-service/
+│       ├── backend/
+│       └── Dockerfile.backend
+├── shared/
+│   ├── auth/
+│   ├── db/
+│   └── utils/
+├── deployments/
+│   ├── scientific-data/
+│   └── auth-service/
+├── monitoring/
+│   ├── prometheus/
+│   └── grafana/
+├── .circleci/
+│   └── config.yml
+├── docker-compose.yml
+└── README.md
+```
+
+---
+
+## Tech Stack
+
+| Category | Technology |
+|---|---|
+| Cloud | AWS (ECS Fargate, RDS, S3, ECR, VPC, IAM, KMS, Cognito) |
+| IaC | Terraform |
+| Backend | FastAPI (Python) |
+| Frontend | React |
+| Database | PostgreSQL on AWS RDS |
+| Containerization | Docker, AWS ECS Fargate |
+| CI/CD | CircleCI, ArgoCD |
+| Monitoring | Prometheus, Grafana, AWS CloudWatch |
+| Security | GuardDuty, CloudTrail, AWS Secrets Manager, KMS |
+
+---
+
+## Build Order
+
+```
+Phase 1 (Terraform)
+  networking → iam → compute → database → storage → cognito
+
+Phase 2 (Apps)
+  auth-service → shared lib → scientific-data
+
+Phase 3 (CI/CD)
+  CircleCI pipelines → ArgoCD setup → deployment manifests
+
+Phase 4 (Monitoring)
+  Prometheus → Grafana → CloudWatch alarms → SNS alerts
+```
+
+---
+## Misc.
 
 ### Application Monitoring
 
@@ -151,4 +217,4 @@ Develop and test incident response playbooks to ensure readiness.
 
 Utilize AWS SNS and other tools for alerting and notifications when monitoring thresholds are breached.
 
-The Magnolia Project is designed to showcase my skills in deploying a secure, automated cloud infrastructure using modern DevOps practices. I created this project to get more hands-on experience with both infrastructure management and application development while emphasizing security and scalability.
+*The Magnolia Project is designed to showcase my skills in deploying a secure, automated cloud infrastructure using modern DevOps practices. I created this project to get more hands-on experience with both infrastructure management and application development while emphasizing security and scalability.*
