@@ -80,11 +80,13 @@ jobs:
           command: |
             curl -L https://github.com/aquasecurity/trivy/releases/download/v0.69.2/trivy_0.69.2_Linux-64bit.tar.gz -o trivy.tar.gz
             tar -xzf trivy.tar.gz
+            ls -la
             rm trivy.tar.gz
       - run:
           name: Scan with trivy
           command: |
-            trivy fs --security-checks vuln,config --format json --output trivy-report.json . || true
+            ls -la && find . -name trivy -type f 2>/dev/null
+            ./trivy_0.69.2_Linux-64bit/trivy fs --security-checks vuln,config --format json --output trivy-report.json . || true
       - store_artifacts:
           path: trivy-report.json
           destination: trivy-scan
