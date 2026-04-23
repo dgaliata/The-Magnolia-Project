@@ -13,7 +13,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "magnolia-terraform-state"
+    bucket = "magnolia-tf-backend"
     key    = "dev/terraform.tfstate"
     region = "us-east-1"
   }
