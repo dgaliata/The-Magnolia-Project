@@ -77,5 +77,4 @@ workflows:
       - secret-scanning
       - semgrep-scan
       - pip-audit
-      - terraform-security:
-          path: ./terraform
+      - terraform-security
