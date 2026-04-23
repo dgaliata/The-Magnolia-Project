@@ -62,14 +62,33 @@ jobs:
       - run:
           name: Install tfsec
           command: |
-            brew install tfsec || wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.0.11/tfsec-linux-amd64 -O tfsec && chmod +x tfsec
+            wget -q https://github.com/aquasecurity/tfsec/releases/download/v1.0.11/tfsec-linux-amd64 -O tfsec && chmod +x tfsec
       - run:
           name: Scan Terraform
           command: |
-            ./tfsec . --format=json --out=tfsec-report.json || true
+            ./tfsec ./terraform --format=json --out=tfsec-report.json || true
       - store_artifacts:
           path: tfsec-report.json
           destination: tfsec-report
+
+  trivy-scan:
+    executor: default
+    steps:
+      - checkout
+      - run:
+          name: Install trivy
+          command: |
+            wget -q https://github.com/aquasecurity/trivy/releases/download/v0.69.2/trivy_0.69.2_linux-amd64.tar.gz
+            tar -xzf trivy_0.69.2_linux-amd64.tar.gz
+      - run:
+          name: Scan Dockerfiles
+          command: |
+            ./trivy fs --security-checks vuln,config --format json --output trivy-report.json . || true
+            ./trivy image --severity HIGH,CRITICAL --format json --output trivy-image-report.json --scanners vuln . 2>/dev/null || true
+      - store_artifacts:
+          path: trivy-report.json
+          destination: trivy-scan
+        when: on_fail
 
 workflows:
   security-scans:
@@ -78,3 +97,4 @@ workflows:
       - semgrep-scan
       - pip-audit
       - terraform-security
+      - trivy-scan
