@@ -81,13 +81,28 @@ jobs:
             wget -q https://github.com/aquasecurity/trivy/releases/download/v0.69.2/trivy_0.69.2_linux-amd64.tar.gz
             tar -xzf trivy_0.69.2_linux-amd64.tar.gz
       - run:
-          name: Scan Dockerfiles
+          name: Scan with trivy
           command: |
             ./trivy fs --security-checks vuln,config --format json --output trivy-report.json . || true
-            ./trivy image --severity HIGH,CRITICAL --format json --output trivy-image-report.json --scanners vuln . 2>/dev/null || true
       - store_artifacts:
           path: trivy-report.json
           destination: trivy-scan
+
+  checkov-scan:
+    executor: default
+    steps:
+      - checkout
+      - run:
+          name: Install checkov
+          command: |
+            pip3 install checkov
+      - run:
+          name: Scan Infrastructure as Code
+          command: |
+            checkov --directory . --output json --output-file checkov-report.json || true
+      - store_artifacts:
+          path: checkov-report.json
+          destination: checkov-scan
 
 workflows:
   security-scans:
@@ -97,3 +112,4 @@ workflows:
       - pip-audit
       - terraform-security
       - trivy-scan
+      - checkov-scan
