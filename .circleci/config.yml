@@ -78,7 +78,9 @@ jobs:
       - run:
           name: Install trivy
           command: |
-            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -v 0.69.2
+            curl -L https://github.com/aquasecurity/trivy/releases/download/v0.69.2/trivy_0.69.2_linux-amd64.tar.gz -o trivy.tar.gz
+            tar -xzf trivy.tar.gz
+            rm trivy.tar.gz
       - run:
           name: Scan with trivy
           command: |
