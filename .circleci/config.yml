@@ -88,7 +88,6 @@ jobs:
       - store_artifacts:
           path: trivy-report.json
           destination: trivy-scan
-        when: on_fail
 
 workflows:
   security-scans:
