@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Magnolia Project</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="logo.png" alt="Magnolia Logo" class="logo" />
+
+    <h1>The Magnolia Project</h1>
+    <p class="subtitle">Internal Portal</p>
+
+    <div class="links">
+      <a href="#">Employee Directory</a>
+      <a href="#">Scientific Data</a>
+      <a href="#">Monitoring Dashboard</a>
+      <a href="#">Documentation</a>
+    </div>
+
+    <footer>
+      <p>© 2026 Magnolia Project · Biomedical DevOps Lab</p>
+    </footer>
+  </div>
+</body>
+</html>
+
+:root {
+  --bg: #000000;
+  --primary: #6FA0C6;
+  --text: #e6e6e6;
+  --muted: #9aa4ad;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+  max-width: 700px;
+}
+
+.logo {
+  width: 260px;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 2.5rem;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.links a {
+  text-decoration: none;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.links a:hover {
+  background-color: var(--primary);
+  color: #000;
+}
+
+footer {
+  margin-top: 3rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}

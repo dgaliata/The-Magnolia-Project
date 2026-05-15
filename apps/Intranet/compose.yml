@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  magnolia-intranet:
+    build: .
+    container_name: magnolia-intranet
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    networks:
+      - proxy_default
+
+networks:
+  proxy_default:
+    external: true

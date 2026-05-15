@@ -80,7 +80,6 @@ jobs:
           command: |
             curl -L https://github.com/aquasecurity/trivy/releases/download/v0.69.2/trivy_0.69.2_Linux-64bit.tar.gz -o trivy.tar.gz
             tar -xzf trivy.tar.gz
-            ls -la
             rm trivy.tar.gz
       - run:
           name: Scan with trivy
