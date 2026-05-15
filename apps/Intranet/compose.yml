@@ -4,4 +4,4 @@ services:
     container_name: magnolia-intranet
     restart: unless-stopped
     ports:
-      - "8090:80"
+      - "8090:8080"
